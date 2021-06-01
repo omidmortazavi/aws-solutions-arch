@@ -1,1 +1,1 @@
-AWS
+AWS Solutions Architect Notes
