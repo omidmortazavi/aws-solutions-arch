@@ -1,10 +1,7 @@
 # Identity and Access Management (IAM)
 ## Summary
-
-| Term          | Definition          |
-| ------------- |:-------------------:|
-| Users         | Physical User       |
-| Groups | Contains Only Users  |
+- Users : Physical User  
+- Groups : Contains Only Users  
 - Policies : JSON document that outlines permissions for users and groups  
 - Roles : for EC2 Instance or AWS Service  
 - Security : MFA + Password Policy  
