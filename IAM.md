@@ -1,12 +1,12 @@
 # Identity and Access Mamangemr (IAM)
 ## Summary
-Users : Physical User
-Groups : Contains Only Users
-Policies : JSON document that outlines permissions for users and groups
-Roles : for EC2 Instance or AWS Service
-Security : MFA + Password Policy
-Access Keys : Programmatic Access (CLI/SDK)
-Audit : IAM Cred Report & IAM Access Advisor
+Users : Physical User  
+Groups : Contains Only Users  
+Policies : JSON document that outlines permissions for users and groups  
+Roles : for EC2 Instance or AWS Service  
+Security : MFA + Password Policy  
+Access Keys : Programmatic Access (CLI/SDK)  
+Audit : IAM Cred Report & IAM Access Advisor  
 
 ---
 ## Notes
