@@ -1,6 +1,7 @@
-# Identity and Access Mamangemr (IAM)
+# Identity and Access Management (IAM)
 ## Summary
-- Users : Physical User  
+
+|Users | Physical User  
 - Groups : Contains Only Users  
 - Policies : JSON document that outlines permissions for users and groups  
 - Roles : for EC2 Instance or AWS Service  
