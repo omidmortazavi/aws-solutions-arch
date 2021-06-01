@@ -1,6 +1,10 @@
 # Identity and Access Management (IAM)
 ## Summary
 
+| Term          | Definition          |
+| ------------- |:-------------------:|
+| Users         | Physical User       |
+
 |Users | Physical User  
 - Groups : Contains Only Users  
 - Policies : JSON document that outlines permissions for users and groups  
