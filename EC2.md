@@ -1,11 +1,5 @@
 # EC2
 ## Summary
-- EC2 : VM
-- EBS : Virtual Drives
-- ELB : Load Balancing
-- ASG : Auto-Scaling
-- EC2 User Data: Bootstrap sciprt
-
 - Instance Types 
   - General
   - Memory
@@ -23,6 +17,22 @@
       - capacityOptimized
   - Dedicated
 
+- EC2 User Data: Bootstrap sciprt
+
+- Storage
+  - EBS : NAS
+    - gp2/gp3 : SDD - General Purpose
+    - io1/io2 : SDD - PIOPS
+    - st1/sc1 : Throughput Optimized HDD / Cold HDD
+  - Snapshot : Volume Backup
+  - AMI : Amazon Machine Image
+    - AWS
+    - Personal
+    - MarketPlace
+  - Instance Stores : High-Perf HD attached to Physical Host -  Very high IOPS
+  - EBS Multi-Attach : (io1/io2 only)
+  - EBS Raid : RAID0 (Perf.) and RAID1 (Mirror)
+
 - Secuirity Groups : FW applied to an **instance**
   - Can reference another security group
   - Ports : SSH(22), FTP(21), SFTP(22), HTTP(80), HTTPS(443), RDP(3389)
@@ -38,8 +48,12 @@
   - Spread : critical-apps
   - Partition : distributed-scale
 
-- Hibernate
+- Hibernate : RAM state written to EBS volume
 
+- Advanced : 
+  - Nitro
+  - vCPU
+  - Capacity Reservations
 ---
 ## Notes
 ### EC2 Basics
@@ -135,6 +149,94 @@ Storage Optimized (Ix/Dx): Disk
 - Elastic IP : Fixed Public IP
   - Max of 5 per account
 
+### EC2 Instance Storage
+- **Elastic Block Storage (EBS)**
+  - Network attached Volume
+  - Data persists after instance
+  - Can only be mounted to one instance at a time *multi-attach 
+  feature
+  - Can attach multiple EBS volumes to an EC2
+  - Delete on Termination (Default on Root)
+  - AZ Scoped
+
+  - **Snapshots**
+    - Backup of EBS Volume
+    - Not necassary to detach, but recommended.
+    - Can copy across AZ or Region
+    - Can create a volume from a snapshot
+
+  - **Amazon Machine Image**
+    - Customisation of an EC2 Instance
+    - Regionally Scoped
+    - Public AMI
+    - Own AMI
+    - Marketplace AMI
+
+  - ** EBS Volume Types**
+    - gp2/gp3 (General Purpose SSD)
+      - 1 to 16GB
+      - gp3 you can adujust IOPS & Throughput, gp2 they are linked
+    - io1/io2 (High Perf SSD)
+      - Provisioned IOPS (PIOPS)
+      - Database workloads
+    - st1 (Low Cost HDD)
+      - Throughput Optimised
+    - sc1 (Lowest Cost HDD)
+      - Archived data
+    - Only gp and io can be used for boot volume
+    - Measured in Size, IOPS, Throughput
+
+    **Multi-Attach**
+      - io1/io2 family
+      - AZ scoped
+      - App must handle concurrent read/write
+      - Cluster-Aware filesystem (not XFS, EX4, etc..)
+    
+    **Encryption**
+      - Data at rest encryption
+      - Instance to Volume is encrypted
+      - Snapshots are encrypted
+      - Volumes from snapshot are encrypted
+      - Leverages KMS (AES-256)
+      - Encrypt an unencrypted volume
+        - Create Snapshot
+        - Encrypt Snapshot
+        - Create new Volume from Snapshot
+        - Attach Volume to Original Instance
+    
+    **EBS RAID**
+      - Logical Volume of multiple EBS Volumes configured in OS
+      - Already replicated in AZ
+      - RAID 0, RAID 1 (Recommended for EBS)
+      - RAID 0 - Performance
+      - RAID 1 - Fault Tolerance by Mirroring
+
+- **EC2 Instance Store**
+  - High-Perfomance HD attached to Physical Host - Very high IOPS
+  - EBS has *limited* performance
+  - Ephemeral Storage
+  - Good for buffer/scratch/temp content
+  - Risk of HW failure
+
+- **Elastic File Store**
+  - Managed Network File System (NFS) 
+  - Multi-AZ mountable to multiple EC2
+  - HA, Scalable, Expensive (3x gp2), pay per use
+  - ContentManagement, WebServing, Workpress
+  - NFSv4.2
+  - Linux Only (POSIX)
+  - Encrytpion at rest with KMS
+  - Performance Mode
+    - General Purpose
+    - Max I/O
+    - Throughput Mode
+      - Bursting
+      - Provisioned
+    - Storage Tiers
+      - Standard
+      - Infrequent Access (EFS-IA)
+      - Lifecycle Management
+
 ### Placement Groups
 - Control over EC2 Instance placement
   - Cluster (low-latency in AZ)
@@ -145,3 +247,20 @@ Storage Optimized (Ix/Dx): Disk
 - Use IAM Role to grant privileges to EC2 Instances
 
 ### EC2 Hibernate
+- in-memory (RAM) state is preserved in root EBS volume
+- volume must be encrypted
+- long-running process, long-init
+- only supported on certain instance types and AMI
+- RAM limitation
+
+### Advanced Instance
+- EC2 Nitro : Next Gen Instances 
+  - Better Network & EBS IOPS
+  - Better Security
+- vCPU
+  - vCPU per Thread
+  - Optimising CPU Options
+    - Reduce # CPU Cores (Licensing) or Disable multithreading
+- Capacity Reservations
+  - Manual or planned end-date of reservation
+  - No need for commitment
