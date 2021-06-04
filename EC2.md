@@ -1,10 +1,10 @@
 # EC2
 ## Summary
-- Instance Types 
+- **Instance Types**
   - General
   - Memory
   - CPU
-- Instance Launch Types 
+- **Instance Launch Types**
   - On-Demand 
   - Reserved
   - Spot
@@ -17,43 +17,64 @@
       - capacityOptimized
   - Dedicated
 
-- EC2 User Data: Bootstrap sciprt
+- **EC2 User Data**
+  - Bootstrap sciprt
 
-- Storage
-  - EBS : NAS
+- **Storage**
+  - **EBS** 
+    - NAS
     - gp2/gp3 : SDD - General Purpose
     - io1/io2 : SDD - PIOPS
     - st1/sc1 : Throughput Optimized HDD / Cold HDD
-  - Snapshot : Volume Backup
-  - AMI : Amazon Machine Image
-    - AWS
-    - Personal
-    - MarketPlace
-  - Instance Stores : High-Perf HD attached to Physical Host -  Very high IOPS
-  - EBS Multi-Attach : (io1/io2 only)
-  - EBS Raid : RAID0 (Perf.) and RAID1 (Mirror)
+    - **Snapshot** : Volume Backup
+    - **AMI** : Amazon Machine Image
+      - AWS
+      - Personal
+      - MarketPlace
+    - **Instance Stores** : High-Perf HD attached to Physical Host -  Very high IOPS
+    - EBS Multi-Attach : (io1/io2 only)
+    - EBS Raid : RAID0 (Perf.) and RAID1 (Mirror)
 
-- Secuirity Groups : FW applied to an **instance**
+  - **EFS**
+    - Managed Network File System (NFS) 
+    - Multi-AZ mountable to multiple EC2
+    - HA, Scalable, Expensive (3x gp2), pay per use
+    - Linux Only (POSIX)
+    - Performance Mode
+      - General Purpose
+      - Max I/O
+    - Throughput Mode
+      - Bursting : Sclaed with file system size
+      - Provisioned : Fixed at specified ammount
+    - Storage Tiers
+      - Standard
+      - Infrequent Access (EFS-IA)
+      - Lifecycle Management
+
+- **Secuirity Groups** 
+  - FW applied to an **instance**
   - Can reference another security group
   - Ports : SSH(22), FTP(21), SFTP(22), HTTP(80), HTTPS(443), RDP(3389)
 
-- Networking 
+- **Networking**
   - Elastic Network Interface (ENI)
     - Supports multiple ENI's per Instance
     - Portable within an AZ
   - Elastic IP : Fixed Public IP
 
-- Placement Groups
+- **Placement Groups**
   - Cluster : low-latency
   - Spread : critical-apps
   - Partition : distributed-scale
 
-- Hibernate : RAM state written to EBS volume
+- **Hibernate** 
+  - RAM state written to EBS volume
 
-- Advanced : 
+- **Advanced** 
   - Nitro
   - vCPU
   - Capacity Reservations
+
 ---
 ## Notes
 ### EC2 Basics
@@ -229,13 +250,23 @@ Storage Optimized (Ix/Dx): Disk
   - Performance Mode
     - General Purpose
     - Max I/O
-    - Throughput Mode
-      - Bursting
-      - Provisioned
-    - Storage Tiers
-      - Standard
-      - Infrequent Access (EFS-IA)
-      - Lifecycle Management
+  - Throughput Mode
+    - Bursting : Sclaed with file system size
+    - Provisioned : Fixed at specified ammount
+  - Storage Tiers
+    - Standard
+    - Infrequent Access (EFS-IA)
+    - Lifecycle Management
+
+  - **EBS vs. EFS**
+    - EBS 
+      - One Instance, One AZ
+      - Root Terminated by Default
+    - EFS
+      - Multi Instance, Multi AZ
+      - Linux Only
+      - 3x more expensive, PAYG
+      - Lifecycle management
 
 ### Placement Groups
 - Control over EC2 Instance placement
