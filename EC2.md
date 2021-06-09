@@ -24,7 +24,7 @@
   - **EBS** 
     - NAS
     - gp2/gp3 : SDD - General Purpose
-    - io1/io2 : SDD - PIOPS
+    - io1/io2 : SDD - PIOPS - Max 64000 IOPS
     - st1/sc1 : Throughput Optimized HDD / Cold HDD
     - **Snapshot** : Volume Backup
     - **AMI** : Amazon Machine Image
