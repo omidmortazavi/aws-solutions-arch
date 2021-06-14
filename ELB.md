@@ -93,10 +93,34 @@
     - SSH Kep Pair
   - **Scaling Policies**
     - Min/Actual/Max Size
-    - Possible to scale on CloudWatch Alarms
-    - *Newer* rules based on EC2 metrics (CPU, Requests, Network In/Out)
-    - *Custom* metric based on API PUT
-    - *Scheduled*
+    - **Tarket Tracking Scaling**
+      - Simplest, Newer
+      - Based on EC2 metrics (CPU, Requests, Network In/Out)
+      - e.g Average CPU @ 40%
+    - **Simple & Step Scaling**
+      - Scale on CloudWatch Alarms
+      - e.g CPU > 70% add 2 Units, CPU < 30% remove 1 Unit
+    - **Scheduled**
+      - Known usage pattern
+      - e.g increate to 10 units at 5pm on Friday
+    - **Custom** metric based on API PUT
+  - **Scaling Warmup**
+    - How long instance needs to boot
+  - **Scaling Cooldown**
+    - Ensure scaling action does not start before previous action take effect
+    - Default 300s
+  - **Termination Policy**
+    - Most Instances in AZ then oldest launch config
+  - **Lifecycle Hooks**
+    - Perform extra steps after launch before in-service (Pending State) 
+    - Perform extra steps before terminating (Terminating State)
+  - **Launch Template vs. Launch Config**
+    - Launch Config : Legacy & Immutable
+    - Launch Template : Recommended
+      - Versioned
+      - Parameter subsets for re-use, and inheritance
+      - Provision On-Demand and Spot
+      - Supports T2
 
 - **Stickiness**
   - Client is always redirected to the same instance. 
