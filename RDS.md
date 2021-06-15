@@ -140,16 +140,29 @@
     - Query ElastiCache, if not (CacheMiss) get from RDS and store in Cache
     - Must be Cache invalidation strategy
   - Redis vs. Memchachd
-    - *Redis*
+    - **Redis**
       - Replication - HA
       - Mutli AZ with auto f/o
       - Read Replicas with HA
       - Data Durability using AOF Persistance
       - Backup & Restore
-    - *Memcached*
+    - **Memcached**
       - Sharding - High-Perf, Distributed system
       - Multi-node for sharding
       - No HA
       - Non Persistent
       - No backup & Restore
       - Multi-threaded
+  - **Memcache Security**
+    - Do not support IAM Auth
+    - Support Security Groups
+    - Redis AUTH
+      - Supports Token
+      - Support encryption at rest
+      - Supports SSL for in-flight encrption
+    - Memcached
+      - Supports SASL based auth
+  - **Patterns**
+    - Lazy Loading - all data cached, can become stale
+    - Write Through - Add or update data in cache when written to DB
+    - Session Store - Store temp session data in DB using TTL
