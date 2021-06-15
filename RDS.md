@@ -100,7 +100,56 @@
     - Storage Striped across 100s of volumes
       - Horizontally Scaled - 10GB to 64 TB
     - One Instance takes writes (master)
+      - *Writer Endpoint*
     - Automated failover of master in less than 30s
     - Master + upto 15 Read Replicas
+      - Horizontally scaled
+      - *Reader Endpoint* : Connection load balancing
+    - Can point to DB directly but recommended to point to *Writer* or *Reader* Endpoint
     - Support for Cross Region Replication
+  - **Auto-Scaling**
+    - Autoscaling of Reader Replicas (accessed by Reader Endpoint)
+  - **Custom Endpoints**
+    - Custom Endpoints for each Instance Type
+    - Larger Instances for specific use-cases (i.e large query)
+    - Reader Endpoint still available but not used generally
+  - **Serverless**
+    - Automated instantiation and scaling based on usage
+  - **Multi-Master**
+    - Immediate f/o of writer node (HA)
+    - Every node does R/W - vs. promoting RR as new master
+  - **Global Aurora**
+    - Useful for DR
+    - 1 Primary region (R/W)
+    - Upto 5 secondary regions(RO)
+    - Replication lag is 1s
+    - Recommended
+    - Promoting another region has RTO of < 1m
+  - **Aurora ML**
+    - Enables ML-Based predictions to your apps via SQL (i.e recommend products)
+    - Aurora sends data to service and receives predictions 
+    - Supported on SageMaker (any ML Model) and Comprehend (sentiment analysis)
 
+- **Amazon ElastiCache**
+  - *Managed* Redis/Memcached
+  - In-Memory database with high perf, low latency
+  - Helps off-load db
+  - Makes application stateless
+    - Application writes session data into Cache, another instance reads retreives session from cache
+  - Example
+    - Query ElastiCache, if not (CacheMiss) get from RDS and store in Cache
+    - Must be Cache invalidation strategy
+  - Redis vs. Memchachd
+    - *Redis*
+      - Replication - HA
+      - Mutli AZ with auto f/o
+      - Read Replicas with HA
+      - Data Durability using AOF Persistance
+      - Backup & Restore
+    - *Memcached*
+      - Sharding - High-Perf, Distributed system
+      - Multi-node for sharding
+      - No HA
+      - Non Persistent
+      - No backup & Restore
+      - Multi-threaded
